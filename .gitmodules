@@ -1,0 +1,6 @@
+[submodule "extern/Glad"]
+	path = extern/Glad
+	url = https://github.com/JulianWeidert/Glad.git
+[submodule "extern/glfw"]
+	path = extern/glfw
+	url = https://github.com/glfw/glfw.git
