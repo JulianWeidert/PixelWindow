@@ -8,4 +8,5 @@ project ("PixelWindow" C CXX)
 # Include sub-projects.
 add_subdirectory("extern")
 add_subdirectory("src")
+add_subdirectory("examples")
 
