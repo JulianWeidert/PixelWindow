@@ -1,6 +1,4 @@
-﻿// SoftwareRenderer.cpp : Defines the entry point for the application.
-//
-
+﻿
 #include <iostream>
 
 #include <functional>
@@ -10,13 +8,25 @@
 
 #include "PixelWindow/PixelWindow.h"
 
+
 int main(void){
-   
+
     int width = 640;
     int height = 480;
     int color = 0;
 
-    sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");
+    {
+        sr::Window window1 = sr::Window(width, height, "Hello World 1");
+
+        window1 = std::move(window1);
+
+        while (window1.isActive()) {
+            window1.pollEvents();
+        }
+
+    }
+
+    /*sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");
     w.addResizeCallback([&color](int width, int height) {
         color = 0x00 << 24 | (width % 256) << 16 | (height % 256) << 8 | 0xFF;
     });
@@ -42,9 +52,8 @@ int main(void){
             cpyCount = 0;
         }
 
-
         w.pollEvents();
-    }
+    }*/
 
     return 0;
 }

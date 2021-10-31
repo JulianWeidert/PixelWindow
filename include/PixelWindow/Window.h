@@ -40,6 +40,8 @@ namespace sr {
         Window& operator=(const Window& other) = delete;
         Window& operator=(Window&& other) noexcept;
 
+        friend void swap(Window& w1, Window& w2);
+
         bool isActive() const noexcept;
         void pollEvents() const noexcept;
         void makeCurrent() const noexcept;

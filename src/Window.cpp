@@ -69,18 +69,21 @@ namespace sr {
     }
 
     Window& Window::operator=(Window&& other) noexcept {
-        if (this != &other) {
-            glfwDestroyWindow(this->handle);
+        Window w = Window(std::move(other));
+        swap(*this, w);
 
-            this->windowResizeCallbacks = std::move(other.windowResizeCallbacks);
-            this->windowRefreshCallbacks = std::move(other.windowRefreshCallbacks);
-            this->handle = other.handle;
-            other.handle = nullptr;
-        }
         glfwSetWindowUserPointer(this->handle, this);
         return *this;
     }
 
+    void swap(Window& w1, Window& w2) {
+        using std::swap;
+
+        swap(w1.handle, w2.handle);
+        swap(w1.windowMouseCallbacks, w2.windowMouseCallbacks);
+        swap(w1.windowRefreshCallbacks, w2.windowRefreshCallbacks);
+        swap(w1.windowResizeCallbacks, w2.windowResizeCallbacks);
+    }
 
     bool Window::isActive() const noexcept {
         return !glfwWindowShouldClose(this->handle);
