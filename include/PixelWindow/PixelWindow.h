@@ -8,6 +8,7 @@ namespace sr {
 	private:
 		int width = 0;
 		int height = 0;
+		bool resized = false;
 		int* pixelBuffer = nullptr;
 
 		// Geometry
@@ -24,6 +25,8 @@ namespace sr {
 		// Pbos
 		GLuint pbos[2]{ 0 };
 		int pboIndex = 0;
+
+		void resizeBuffers() noexcept;
 
 	public:
 		PixelWindow(int width, int height, const char* title);

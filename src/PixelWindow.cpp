@@ -58,10 +58,11 @@ namespace sr {
         this->addResizeCallback([this](int width, int height) { 
             this->width = width;
             this->height = height;
+            this->resized = true;
             glViewport(0, 0, width, height);
         });
         
-        this->addRefreshCallback([this]() {
+        /*this->addRefreshCallback([this]() {
             int nPixels = this->width * this->height;
             int dataSize = nPixels * 4;
 
@@ -78,7 +79,7 @@ namespace sr {
             
             glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
             glBindTexture(GL_TEXTURE_2D, 0);
-        });
+        });*/
 
         // Buffer vertex vertices
         glGenBuffers(1, &this->vertVbo);
@@ -212,6 +213,8 @@ namespace sr {
     }
 
 	void PixelWindow::beginFrame() {
+        if (this->resized) this->resizeBuffers();
+
         int dataSize = this->width * this->height * 4;
 
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, this->pbos[this->pboIndex]);
@@ -259,6 +262,27 @@ namespace sr {
 
     int PixelWindow::getHeight() const noexcept {
         return this->height;
+    }
+
+    // Private member functions
+
+    void PixelWindow::resizeBuffers() noexcept {
+        int nPixels = this->width * this->height;
+        int dataSize = nPixels * 4;
+
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[0]);
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, dataSize, nullptr, GL_STREAM_DRAW);
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[1]);
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, dataSize, nullptr, GL_STREAM_DRAW);
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+
+        glBindTexture(GL_TEXTURE_2D, this->textureId);
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[pboIndex]);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 }
