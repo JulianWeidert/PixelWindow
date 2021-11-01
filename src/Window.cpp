@@ -76,7 +76,7 @@ namespace sr {
         return *this;
     }
 
-    void swap(Window& w1, Window& w2) {
+    void swap(Window& w1, Window& w2) noexcept {
         using std::swap;
 
         swap(w1.handle, w2.handle);

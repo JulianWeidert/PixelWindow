@@ -114,6 +114,7 @@ namespace sr {
         glAttachShader(this->shader, this->fs);
         glLinkProgram(this->shader);
 
+
         // Texture creation
         glGenTextures(1, &this->textureId);
         glBindTexture(GL_TEXTURE_2D, this->textureId);
@@ -133,6 +134,68 @@ namespace sr {
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	}
 
+    PixelWindow::PixelWindow(PixelWindow&& other) noexcept : Window(std::move(other)) {
+        this->width = other.width;
+        this->height = other.height;
+        this->pixelBuffer = other.pixelBuffer;
+
+        this->vertVbo = other.vertVbo;
+        this->texVbo = other.texVbo;
+        this->vao = other.vao;
+
+        this->fs = other.fs;
+        this->vs = other.vs;
+        this->shader = other.shader;
+
+        this->textureId = other.textureId;
+
+        this->pbos[0] = other.pbos[0];
+        this->pbos[1] = other.pbos[1];
+        this->pboIndex = other.pboIndex;
+
+        other.vertVbo = other.texVbo = other.vao = 0;
+        other.shader = other.textureId = 0;
+        other.pbos[0] = other.pbos[1] = 0;
+    }
+
+    PixelWindow& PixelWindow::operator=(PixelWindow&& other) noexcept {
+        static_cast<Window&>(*this) = std::move(static_cast<Window&>(other));
+        PixelWindow w(std::move(other));
+        swap(*this, w);
+        return *this;
+    }
+
+    PixelWindow::~PixelWindow() {
+        glDeleteBuffers(0, &this->vertVbo);
+        glDeleteBuffers(0, &this->texVbo);
+        glDeleteVertexArrays(0, &this->vao);
+
+        glDeleteProgram(this->shader);
+
+        glDeleteTextures(0, &this->textureId);
+
+        glDeleteBuffers(0, this->pbos);
+    }
+
+    void swap(PixelWindow& w1, PixelWindow& w2) noexcept {
+        using std::swap;
+
+        swap(w1.width, w2.width);
+        swap(w1.height, w2.height);
+        swap(w1.pixelBuffer, w2.pixelBuffer);
+
+        swap(w1.vertVbo, w2.vertVbo);
+        swap(w1.texVbo, w2.texVbo);
+        swap(w1.vao, w2.vao);
+
+        swap(w1.textureId, w2.textureId);
+
+        swap(w1.fs, w2.fs);
+        swap(w1.vs, w2.vs);
+
+        swap(w1.pbos, w2.pbos);
+        swap(w1.pboIndex, w2.pboIndex);
+    }
 
 	void PixelWindow::setBackgroundColor(int color) {
         assert(this->pixelBuffer != nullptr);

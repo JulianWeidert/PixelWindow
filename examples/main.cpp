@@ -15,21 +15,13 @@ int main(void){
     int height = 480;
     int color = 0;
 
-    {
-        sr::Window window1 = sr::Window(width, height, "Hello World 1");
-
-        window1 = std::move(window1);
-
-        while (window1.isActive()) {
-            window1.pollEvents();
-        }
-
-    }
-
-    /*sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");
+    sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");
     w.addResizeCallback([&color](int width, int height) {
         color = 0x00 << 24 | (width % 256) << 16 | (height % 256) << 8 | 0xFF;
     });
+
+    //auto w = std::move(w1);
+
 
     int cpyCount = 0;
     double accTime = 0;
@@ -46,14 +38,14 @@ int main(void){
        
         if (accTime > 1.0) {
             int bytesPerFrame = w.getWidth() * w.getHeight() * 4;
-            int transferPerSecondMB = (cpyCount / accTime) * bytesPerFrame / 10e5;
+            int transferPerSecondMB = static_cast<int>((cpyCount / accTime) * bytesPerFrame / 10e5);
             std::cout << transferPerSecondMB << " " << cpyCount << std::endl;
             accTime = 0.0;
             cpyCount = 0;
         }
 
         w.pollEvents();
-    }*/
+    }
 
     return 0;
 }

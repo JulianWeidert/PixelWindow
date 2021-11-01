@@ -30,6 +30,16 @@ namespace sr {
 	public:
 		PixelWindow(int width, int height, const char* title);
 
+		PixelWindow(const PixelWindow& other) = delete;
+		PixelWindow(PixelWindow&& other) noexcept;
+
+		PixelWindow& operator=(const PixelWindow& other) = delete;
+		PixelWindow& operator=(PixelWindow&& other) noexcept;
+
+		~PixelWindow();
+
+		friend void swap(PixelWindow& w1, PixelWindow& w2) noexcept;
+
 		void setBackgroundColor(int color);
 		void setPixel(int x, int y, int color);
 		void beginFrame();
