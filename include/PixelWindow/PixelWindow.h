@@ -16,8 +16,6 @@ namespace sr {
 		GLuint vao = 0;
 
 		// Shaders
-		GLuint vs = 0;
-		GLuint fs = 0;
 		GLuint shader = 0;
 
 		// Texture

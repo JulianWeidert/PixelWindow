@@ -101,19 +101,23 @@ namespace sr {
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
         // Shader creation
-        this->vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(this->vs, 1, &vertexShader, NULL);
-        glCompileShader(this->vs);
+        auto vs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vs, 1, &vertexShader, NULL);
+        glCompileShader(vs);
 
-        this->fs = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(this->fs, 1, &fragmentShader, NULL);
-        glCompileShader(this->fs);
+        auto fs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fs, 1, &fragmentShader, NULL);
+        glCompileShader(fs);
 
         this->shader = glCreateProgram();
-        glAttachShader(this->shader, this->vs);
-        glAttachShader(this->shader, this->fs);
+        glAttachShader(this->shader, vs);
+        glAttachShader(this->shader, fs);
         glLinkProgram(this->shader);
+        glDetachShader(this->shader, fs);
+        glDetachShader(this->shader, fs);
 
+        glDeleteShader(fs);
+        glDeleteShader(vs);
 
         // Texture creation
         glGenTextures(1, &this->textureId);
@@ -143,8 +147,6 @@ namespace sr {
         this->texVbo = other.texVbo;
         this->vao = other.vao;
 
-        this->fs = other.fs;
-        this->vs = other.vs;
         this->shader = other.shader;
 
         this->textureId = other.textureId;
@@ -188,10 +190,9 @@ namespace sr {
         swap(w1.texVbo, w2.texVbo);
         swap(w1.vao, w2.vao);
 
-        swap(w1.textureId, w2.textureId);
+        swap(w1.shader, w2.shader);
 
-        swap(w1.fs, w2.fs);
-        swap(w1.vs, w2.vs);
+        swap(w1.textureId, w2.textureId);
 
         swap(w1.pbos, w2.pbos);
         swap(w1.pboIndex, w2.pboIndex);
