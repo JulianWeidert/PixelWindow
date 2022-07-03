@@ -5,8 +5,6 @@
 
 #include "PixelWindow/PixelWindow.h"
 
-#include <iostream> // TODO Remove
-
 namespace sr {
 
     const float vertices[12] = {
@@ -270,7 +268,6 @@ namespace sr {
 
     // TODO slowes down program
     void PixelWindow::resizeBuffers() noexcept {
-        std::cout << "LOL" << std::endl;
         int nPixels = this->width * this->height;
         int dataSize = nPixels * 4;
 
