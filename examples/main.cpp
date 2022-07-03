@@ -11,8 +11,8 @@
 
 int main(void){
 
-    int width = 640;
-    int height = 480;
+    int width = 1280;
+    int height = 720;
     int color = 0;
 
     sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");

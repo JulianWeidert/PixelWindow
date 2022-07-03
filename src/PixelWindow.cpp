@@ -5,7 +5,7 @@
 
 #include "PixelWindow/PixelWindow.h"
 
-
+#include <iostream> // TODO Remove
 
 namespace sr {
 
@@ -55,13 +55,14 @@ namespace sr {
         this->pixelBuffer = new int[nPixels];
 		
         // Resize Callback
-        this->addResizeCallback([this](int width, int height) { 
+        this->addResizeCallback([this](int width, int height) {
             this->width = width;
             this->height = height;
-            this->resized = true;
+            this->resized = false;
             glViewport(0, 0, width, height);
         });
         
+        // TODO
         /*this->addRefreshCallback([this]() {
             int nPixels = this->width * this->height;
             int dataSize = nPixels * 4;
@@ -213,7 +214,7 @@ namespace sr {
     }
 
 	void PixelWindow::beginFrame() {
-        if (this->resized) this->resizeBuffers();
+        if (!this->resized) this->resizeBuffers();
 
         int dataSize = this->width * this->height * 4;
 
@@ -266,7 +267,10 @@ namespace sr {
 
     // Private member functions
 
+
+    // TODO slowes down program
     void PixelWindow::resizeBuffers() noexcept {
+        std::cout << "LOL" << std::endl;
         int nPixels = this->width * this->height;
         int dataSize = nPixels * 4;
 
@@ -283,6 +287,8 @@ namespace sr {
 
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+
+        this->resized = true;
     }
 
 }
