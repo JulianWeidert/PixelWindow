@@ -1,6 +1,5 @@
 
 #include <assert.h>
-
 #include <glad/gl.h>
 
 #include "PixelWindow/PixelWindow.h"
@@ -160,14 +159,16 @@ namespace sr {
         other.pbos[0] = other.pbos[1] = 0;
     }
 
+
     PixelWindow& PixelWindow::operator=(PixelWindow&& other) noexcept {
-        static_cast<Window&>(*this) = std::move(static_cast<Window&>(other));
         PixelWindow w(std::move(other));
         swap(*this, w);
         return *this;
     }
 
     PixelWindow::~PixelWindow() {
+        this->makeCurrent();
+
         glDeleteBuffers(0, &this->vertVbo);
         glDeleteBuffers(0, &this->texVbo);
         glDeleteVertexArrays(0, &this->vao);
@@ -177,10 +178,13 @@ namespace sr {
         glDeleteTextures(0, &this->textureId);
 
         glDeleteBuffers(0, this->pbos);
+
     }
 
     void swap(PixelWindow& w1, PixelWindow& w2) noexcept {
         using std::swap;
+
+        swap(static_cast<Window&>(w1), static_cast<Window&>(w2));
 
         swap(w1.width, w2.width);
         swap(w1.height, w2.height);
@@ -266,7 +270,6 @@ namespace sr {
     // Private member functions
 
 
-    // TODO slowes down program
     void PixelWindow::resizeBuffers() noexcept {
         int nPixels = this->width * this->height;
         int dataSize = nPixels * 4;

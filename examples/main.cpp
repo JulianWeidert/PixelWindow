@@ -9,7 +9,7 @@
 #include "PixelWindow/PixelWindow.h"
 
 
-int main(void){
+int main(void) {
 
     int width = 1280;
     int height = 720;
@@ -20,14 +20,12 @@ int main(void){
         color = 0x00 << 24 | (width % 256) << 16 | (height % 256) << 8 | 0xFF;
     });
 
-    //auto w = std::move(w1);
-
 
     int cpyCount = 0;
     double accTime = 0;
     while (w.isActive()) {
         double begin = glfwGetTime();
-        
+
         w.beginFrame();
         w.setBackgroundColor(color);
         w.endFrame();
@@ -35,7 +33,7 @@ int main(void){
         double end = glfwGetTime();
         accTime += (end - begin);
         cpyCount++;
-       
+
         if (accTime > 1.0) {
             int bytesPerFrame = w.getWidth() * w.getHeight() * 4;
             int transferPerSecondMB = static_cast<int>((cpyCount / accTime) * bytesPerFrame / 10e5);

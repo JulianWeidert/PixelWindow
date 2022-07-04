@@ -40,6 +40,7 @@ namespace sr {
 
     void Window::windowMouseCallback(GLFWwindow* window, int button, int action, int modes) {
         Window* w = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+        
         for (auto callback : w->windowMouseCallbacks) callback(button, action, modes);
     }
 
@@ -60,24 +61,33 @@ namespace sr {
     }
 
     Window::Window(Window&& other) noexcept {
-        this->windowResizeCallbacks = std::move(other.windowResizeCallbacks);
-        this->windowRefreshCallbacks = std::move(other.windowRefreshCallbacks);
-        this->handle = other.handle;
-        other.handle = nullptr;
+        swap(*this, other);
 
-        glfwSetWindowUserPointer(this->handle, this);
+        this->makeCurrent();
+        if(this->handle != NULL) glfwSetWindowUserPointer(this->handle, this);
     }
 
     Window& Window::operator=(Window&& other) noexcept {
         Window w = Window(std::move(other));
         swap(*this, w);
 
-        glfwSetWindowUserPointer(this->handle, this);
+        this->makeCurrent();
+        if (this->handle != NULL) glfwSetWindowUserPointer(this->handle, this);
         return *this;
     }
 
     void swap(Window& w1, Window& w2) noexcept {
         using std::swap;
+
+        if (w1.handle) {
+            w1.makeCurrent();
+            glfwSetWindowUserPointer(w1.handle, &w2);
+        }
+
+        if (w2.handle) {
+            w2.makeCurrent();
+            glfwSetWindowUserPointer(w2.handle, &w1);
+        }
 
         swap(w1.handle, w2.handle);
         swap(w1.windowMouseCallbacks, w2.windowMouseCallbacks);
