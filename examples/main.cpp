@@ -15,7 +15,7 @@ int main(void) {
     int height = 720;
     int color = 0;
 
-    sr::PixelWindow w = sr::PixelWindow(width, height, "Hello World");
+    pw::PixelWindow w = pw::PixelWindow(width, height, "Hello World");
     w.addResizeCallback([&color](int width, int height) {
         color = 0x00 << 24 | (width % 256) << 16 | (height % 256) << 8 | 0xFF;
     });

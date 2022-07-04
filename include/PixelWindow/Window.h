@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 
-namespace sr {
+namespace pw {
 
     namespace internal {
         class Glfw {

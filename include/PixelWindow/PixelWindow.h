@@ -2,7 +2,7 @@
 
 #include "Window.h"
 
-namespace sr {
+namespace pw {
 
 	class PixelWindow : public Window {
 	private:

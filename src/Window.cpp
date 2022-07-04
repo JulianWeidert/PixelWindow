@@ -3,7 +3,7 @@
 #include <glad/gl.h>
 #include <PixelWindow/Window.h>
 
-namespace sr {
+namespace pw {
 
     void initGlad() {
         if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress))

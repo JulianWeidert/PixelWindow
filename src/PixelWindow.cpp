@@ -4,7 +4,7 @@
 
 #include "PixelWindow/PixelWindow.h"
 
-namespace sr {
+namespace pw {
 
     const float vertices[12] = {
         -1.0f,  1.0f, // topLeft
