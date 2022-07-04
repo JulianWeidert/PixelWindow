@@ -46,6 +46,7 @@ namespace pw {
         void pollEvents() const noexcept;
         void makeCurrent() const noexcept;
         void swapBuffers() const noexcept;
+        void forceClose() noexcept;
 
         void addResizeCallback(std::function<void(int,int)> callback);
         void addRefreshCallback(std::function<void(void)> callback);

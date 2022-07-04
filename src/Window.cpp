@@ -57,7 +57,7 @@ namespace pw {
     }
 
     Window::~Window() {
-        glfwDestroyWindow(this->handle);
+        if(this->isActive()) glfwDestroyWindow(this->handle);
     }
 
     Window::Window(Window&& other) noexcept {
@@ -96,6 +96,7 @@ namespace pw {
     }
 
     bool Window::isActive() const noexcept {
+        if (this->handle == nullptr) return false;
         return !glfwWindowShouldClose(this->handle);
     }
 
@@ -109,6 +110,11 @@ namespace pw {
 
     void Window::swapBuffers() const noexcept {
         glfwSwapBuffers(this->handle);
+    }
+
+    void Window::forceClose() noexcept {
+         glfwDestroyWindow(this->handle);
+         this->handle = nullptr;
     }
 
     void Window::addResizeCallback(std::function<void(int, int)> callback) {
