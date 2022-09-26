@@ -11,19 +11,20 @@
 
 int main(void) {
 
-	pw::PixelWindow w1 = pw::PixelWindow(640, 480, "Hello SoftwareRenderer");
-	pw::PixelWindow w2 = pw::PixelWindow(640, 480, "Hello SoftwareRenderer");
+	pw::PixelWindow w = pw::PixelWindow(640, 480, "Hello SoftwareRenderer");
 
-	while (w1.isActive() || w2.isActive()) {
+	while (w.isActive()) {
 
-		if (!w1.isActive()) w1.forceClose();
-		if (!w2.isActive()) w2.forceClose();
+		w.makeCurrent();
+		w.pollEvents();
 
-		w1.makeCurrent();
-		w1.pollEvents();
+		w.beginFrame();
+		w.setBackgroundColor(0);
 
-		w2.makeCurrent();
-		w2.pollEvents();
+		w.setPixel(100, 100, 0xFFFF0000);
+
+		w.endFrame();
+
 	}
 
     return 0;
