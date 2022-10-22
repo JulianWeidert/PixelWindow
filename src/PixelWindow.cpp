@@ -49,8 +49,9 @@ namespace pw {
         "   fragout = texture(basic_texture, texcoord);"
         "}";
 
+    PixelWindow::PixelWindow(int width, int height, const char* title) : PixelWindow(width, height, title, true){}
 
-	PixelWindow::PixelWindow(int width, int height, const char* title) : Window(width, height, title), 
+	PixelWindow::PixelWindow(int width, int height, const char* title, bool resizable) : Window(width, height, title, resizable), 
 		width(width), height(height)
 	{
         int nPixels = this->width * this->height;
@@ -65,26 +66,6 @@ namespace pw {
             glViewport(0, 0, width, height);
         });
         
-        // TODO
-        /*this->addRefreshCallback([this]() {
-            int nPixels = this->width * this->height;
-            int dataSize = nPixels * 4;
-
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[0]);
-            glBufferData(GL_PIXEL_UNPACK_BUFFER, dataSize, nullptr, GL_STREAM_DRAW);
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[1]);
-            glBufferData(GL_PIXEL_UNPACK_BUFFER, dataSize, nullptr, GL_STREAM_DRAW);
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-
-            glBindTexture(GL_TEXTURE_2D, this->textureId);
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbos[pboIndex]);
-            
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-            glBindTexture(GL_TEXTURE_2D, 0);
-        });*/
-
         // Buffer vertex vertices
         glGenBuffers(1, &this->vertVbo);
         glBindBuffer(GL_ARRAY_BUFFER, vertVbo);

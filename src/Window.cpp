@@ -44,7 +44,12 @@ namespace pw {
         for (auto callback : w->windowMouseCallbacks) callback(button, action, modes);
     }
 
-    Window::Window(int width, int height, const char* title) {
+    Window::Window(int width, int height, const char* title) : Window(width, height, title, true) {}
+
+    Window::Window(int width, int height, const char* title, bool resizable) {
+
+        if (!resizable) glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
         this->handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
         this->makeCurrent();
 

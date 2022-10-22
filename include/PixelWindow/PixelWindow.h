@@ -29,7 +29,8 @@ namespace pw {
 		void resizeBuffers() noexcept;
 
 	public:
-		PixelWindow(int width, int height, const char* title);
+		explicit PixelWindow(int width, int height, const char* title);
+		explicit PixelWindow(int width, int height, const char* title, bool resizable);
 
 		PixelWindow(const PixelWindow& other) = delete;
 		PixelWindow(PixelWindow&& other) noexcept;

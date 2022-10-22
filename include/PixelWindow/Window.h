@@ -32,7 +32,8 @@ namespace pw {
 
     public:
         explicit Window(int width, int height, const char* title);
-        ~Window();
+        explicit Window(int width, int height, const char* title, bool resizable);
+        virtual ~Window();
 
         Window(const Window& other) = delete;
         Window(Window&& other) noexcept;

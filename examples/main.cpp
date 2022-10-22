@@ -11,7 +11,7 @@
 
 int main(void) {
 
-	pw::PixelWindow w = pw::PixelWindow(640, 480, "Hello SoftwareRenderer");
+	pw::PixelWindow w = pw::PixelWindow(640, 480, "Hello SoftwareRenderer", false);
 
 	while (w.isActive()) {
 
